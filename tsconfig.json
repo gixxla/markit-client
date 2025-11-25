@@ -1,6 +1,13 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "typeRoots": ["./types", "./node_modules/@types"],
+    "baseUrl": ".",
+    "paths": {
+      "eslint-plugin-react": ["./types/eslint-plugin-react.d.ts"],
+      "eslint/config": ["./types/eslint-config.d.ts"]
+    },
+    "allowSyntheticDefaultImports": true
   }
 }
