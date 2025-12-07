@@ -20,10 +20,10 @@ export default function Index() {
           await registerAnonymous(anonymousId);
         }
 
-        router.replace("/(tab)/home");
+        router.replace("/(tabs)/home");
       } catch (error) {
         console.error("Initialization failed:", error);
-        router.replace("/(main)/home");
+        router.replace("/(tabs)/home");
       }
     };
 
