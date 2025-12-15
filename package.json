@@ -13,7 +13,7 @@
     "lint:fix": "npm run lint && npm run format"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^2.2.0",
+    "@react-native-async-storage/async-storage": "2.2.0",
     "@react-navigation/native": "^7.1.8",
     "@react-navigation/stack": "^7.6.7",
     "@types/react": "~19.2.0",
