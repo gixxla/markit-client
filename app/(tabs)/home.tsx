@@ -1,34 +1,22 @@
 import React, { useState } from "react";
-import { View, Text, FlatList, TouchableOpacity, TextInput } from "react-native";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { BookmarkItem } from "../../components/BookmarkItem";
-
-import SearchIcon from "../../assets/search-icon.svg";
-import ColorTagIcon from "../../assets/color-tag-icon.svg";
-import DeleteTagIcon from "../../assets/delete-tag-icon.svg";
-
-interface Bookmark {
-  id: string;
-  title: string;
-  url: string;
-  thumbnail?: string;
-  tags: string[];
-}
-
-interface Tag {
-  id: string;
-  name: string;
-  colorCode: string;
-}
+import { SearchBar } from "components/SearchBar";
+import { TagList } from "../../components/TagList";
+import { BookmarkList } from "components/BookmarkList";
+import type { Tag, Bookmark } from "../../types";
 
 export default function HomeScreen() {
   /* 임시 북마크 데이터 */
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([
-    { id: "1", title: "테스트 북마크 1: 개발 문서", url: "https://docs.expo.dev", tags: ["공부", "개발"] },
-    { id: "2", title: "테스트 북마크 2: 여행 블로그", url: "https://naver.com", tags: ["여행"] },
-    { id: "3", title: "테스트 북마크 3: 디자인 레퍼런스", url: "https://figma.com", tags: ["취미", "디자인"] },
+    { id: "1", title: "React Native 공식 문서", url: "https://reactnative.dev", tagIds: ["2", "4"] }, // 공부, 개발
+    { id: "2", title: "피그마 단축키 모음", url: "https://figma.com", tagIds: ["3"] }, // 디자인
+    { id: "3", title: "토스 테크 블로그", url: "https://toss.tech", tagIds: ["2", "5"] }, // 공부, 취미
+    { id: "4", title: "Dribbble - UI 영감", url: "https://dribbble.com", tagIds: ["3", "5"] }, // 디자인, 취미
+    { id: "5", title: "네이버 웹툰", url: "https://comic.naver.com", tagIds: ["5"] }, // 취미
+    { id: "6", title: "GitHub 트렌드", url: "https://github.com", tagIds: ["4", "2"] }, // 개발, 공부
+    { id: "7", title: "제주도 맛집 지도", url: "https://map.naver.com", tagIds: ["6"] }, // 여행
   ]);
-
   /* 임시 태그 데이터 */
   const [tags, setTags] = useState<Tag[]>([
     { id: "1", name: "독서", colorCode: "#1f2937" },
@@ -51,73 +39,19 @@ export default function HomeScreen() {
     });
   };
 
-  const renderTagItem = ({ item }: { item: Tag }) => {
-    const isSelected = selectedTagIds.includes(item.id);
-    return (
-      <TouchableOpacity
-        onPress={() => handlePressTag(item.id)}
-        activeOpacity={0.7}
-        className="flex-row items-center rounded-full px-3 py-1 border"
-        style={{
-          backgroundColor: isSelected ? item.colorCode : "white",
-          borderColor: item.colorCode,
-        }}
-      >
-        {!isSelected && (
-          <View className="mr-1">
-            <ColorTagIcon width={8} height={8} color={item.colorCode} />
-          </View>
-        )}
-        <Text className="font-h1-font text-lg" style={{ color: isSelected ? "white" : item.colorCode }}>
-          {item.name}
-        </Text>
-        {isSelected && (
-          <View className="ml-1">
-            <DeleteTagIcon width={8} height={8} color="white" />
-          </View>
-        )}
-      </TouchableOpacity>
-    );
-  };
-
   const renderHeader = () => (
     <View className="pt-2 pb-5 gap-5">
       {/* 검색 창 */}
-      <View className="flex-row items-center bg-grey-4 rounded-2xl h-10 px-3">
-        <SearchIcon width={24} height={24} />
-        <TextInput placeholder="Search" placeholderTextColor="#999" className="flex-1 ml-2 text-lg text-black" />
-      </View>
+      <SearchBar />
       {/* 태그 리스트 */}
-      <FlatList
-        data={tags}
-        keyExtractor={(item) => item.id}
-        renderItem={renderTagItem}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ gap: 8 }}
-      />
+      <TagList tags={tags} selectedTagIds={selectedTagIds} onPressTag={handlePressTag} />
     </View>
   );
 
   return (
     <SafeAreaView className="flex-1 items-strech bg-white">
       {/* 북마크 리스트 */}
-      <FlatList
-        data={bookmarks}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <BookmarkItem title={item.title} url={item.url} thumbnail={item.thumbnail} tags={item.tags} />
-        )}
-        ItemSeparatorComponent={() => <View className="w-full h-px bg-grey-3" />}
-        ListHeaderComponent={renderHeader}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 20, gap: 4 }}
-        ListEmptyComponent={
-          <View className="flex-1 items-center justify-center mt-20">
-            <Text className="text-gray-400">저장된 북마크가 없습니다.</Text>
-          </View>
-        }
-      />
+      <BookmarkList bookmarks={bookmarks} tags={tags} ListHeaderComponent={renderHeader()} />
     </SafeAreaView>
   );
 }
