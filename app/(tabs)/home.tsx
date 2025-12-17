@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import type { TabType } from "components/TopBar";
+import { TopBar } from "components/TopBar";
 import { SearchBar } from "components/SearchBar";
 import { TagList } from "../../components/TagList";
 import { BookmarkList } from "components/BookmarkList";
 import type { Tag, Bookmark } from "../../types";
 
 export default function HomeScreen() {
+  const [activeTab, setActiveTab] = useState<TabType>("tags");
   /* 임시 북마크 데이터 */
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([
     { id: "1", title: "React Native 공식 문서", url: "https://reactnative.dev", tagIds: ["2", "4"] }, // 공부, 개발
@@ -45,7 +48,7 @@ export default function HomeScreen() {
   };
 
   const renderHeader = () => (
-    <View className="pt-2 pb-5 gap-5">
+    <View className="pt-3 pb-5 gap-5">
       {/* 검색 창 */}
       <SearchBar />
       {/* 태그 리스트 */}
@@ -55,8 +58,16 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView className="flex-1 items-strech bg-white">
+      {/* 상단 네비게이션 */}
+      <TopBar activeTab={activeTab} onTabChange={setActiveTab} />
       {/* 북마크 리스트 */}
-      <BookmarkList bookmarks={filteredBookmarks} tags={tags} ListHeaderComponent={renderHeader()} />
+      {activeTab === "tags" ? (
+        <BookmarkList bookmarks={filteredBookmarks} tags={tags} ListHeaderComponent={renderHeader()} />
+      ) : (
+        <View className="flex-1 items-center justify-center">
+          <Text className="text-gray-400 text-lg">카테고리 화면 준비 중 🚧</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
