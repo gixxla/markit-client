@@ -29,6 +29,11 @@ export default function HomeScreen() {
 
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
 
+  const filteredBookmarks =
+    selectedTagIds.length === 0
+      ? bookmarks
+      : bookmarks.filter((bookmark) => selectedTagIds.every((selectedId) => bookmark.tagIds.includes(selectedId)));
+
   const handlePressTag = (id: string) => {
     setSelectedTagIds((prevIds) => {
       if (prevIds?.includes(id)) {
@@ -51,7 +56,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView className="flex-1 items-strech bg-white">
       {/* 북마크 리스트 */}
-      <BookmarkList bookmarks={bookmarks} tags={tags} ListHeaderComponent={renderHeader()} />
+      <BookmarkList bookmarks={filteredBookmarks} tags={tags} ListHeaderComponent={renderHeader()} />
     </SafeAreaView>
   );
 }
