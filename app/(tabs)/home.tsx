@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, FlatList, TouchableOpacity, TextInput, StatusBar } from "react-native";
+import { View, Text, FlatList, TouchableOpacity, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BookmarkItem } from "../../components/BookmarkItem";
 
 import SearchIcon from "../../assets/search-icon.svg";
-// import DeleteIcon from "../../assets/delete-tag-icon.svg";
+import ColorTagIcon from "../../assets/color-tag-icon.svg";
+import DeleteTagIcon from "../../assets/delete-tag-icon.svg";
 
 interface Bookmark {
   id: string;
@@ -17,7 +18,7 @@ interface Bookmark {
 interface Tag {
   id: string;
   name: string;
-  color: string;
+  colorCode: string;
 }
 
 export default function HomeScreen() {
@@ -30,19 +31,54 @@ export default function HomeScreen() {
 
   /* 임시 태그 데이터 */
   const [tags, setTags] = useState<Tag[]>([
-    { id: "1", name: "전체", color: "bg-gray-800" },
-    { id: "2", name: "공부", color: "bg-red-500" },
-    { id: "3", name: "디자인", color: "bg-blue-500" },
-    { id: "4", name: "개발", color: "bg-green-500" },
-    { id: "5", name: "취미", color: "bg-purple-500" },
-    { id: "6", name: "여행", color: "bg-yellow-500" },
+    { id: "1", name: "독서", colorCode: "#1f2937" },
+    { id: "2", name: "공부", colorCode: "#ef4444" },
+    { id: "3", name: "디자인", colorCode: "#3b82f6" },
+    { id: "4", name: "개발", colorCode: "#22c55e" },
+    { id: "5", name: "취미", colorCode: "#a855f7" },
+    { id: "6", name: "여행", colorCode: "#eab308" },
   ]);
 
-  const renderTagItem = ({ item }: { item: Tag }) => (
-    <TouchableOpacity className={`items-center rounded-full px-3 py-1 ${item.color}`}>
-      <Text className="font-h1-font text-white text-lg">{item.name}</Text>
-    </TouchableOpacity>
-  );
+  const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
+
+  const handlePressTag = (id: string) => {
+    setSelectedTagIds((prevIds) => {
+      if (prevIds?.includes(id)) {
+        return prevIds.filter((tagId) => tagId !== id);
+      } else {
+        return [...prevIds, id];
+      }
+    });
+  };
+
+  const renderTagItem = ({ item }: { item: Tag }) => {
+    const isSelected = selectedTagIds.includes(item.id);
+    return (
+      <TouchableOpacity
+        onPress={() => handlePressTag(item.id)}
+        activeOpacity={0.7}
+        className="flex-row items-center rounded-full px-3 py-1 border"
+        style={{
+          backgroundColor: isSelected ? item.colorCode : "white",
+          borderColor: item.colorCode,
+        }}
+      >
+        {!isSelected && (
+          <View className="mr-1">
+            <ColorTagIcon width={8} height={8} color={item.colorCode} />
+          </View>
+        )}
+        <Text className="font-h1-font text-lg" style={{ color: isSelected ? "white" : item.colorCode }}>
+          {item.name}
+        </Text>
+        {isSelected && (
+          <View className="ml-1">
+            <DeleteTagIcon width={8} height={8} color="white" />
+          </View>
+        )}
+      </TouchableOpacity>
+    );
+  };
 
   const renderHeader = () => (
     <View className="pt-2 pb-5 gap-5">
