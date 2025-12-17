@@ -7,9 +7,12 @@ import { SearchBar } from "components/SearchBar";
 import { TagList } from "../../components/TagList";
 import { BookmarkList } from "components/BookmarkList";
 import type { Tag, Bookmark } from "../../types";
+import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 
 export default function HomeScreen() {
   const [activeTab, setActiveTab] = useState<TabType>("tags");
+  const [isScrolled, setIsScrolled] = useState(false);
+
   /* 임시 북마크 데이터 */
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([
     { id: "1", title: "React Native 공식 문서", url: "https://reactnative.dev", tagIds: ["2", "4"] }, // 공부, 개발
@@ -37,6 +40,12 @@ export default function HomeScreen() {
       ? bookmarks
       : bookmarks.filter((bookmark) => selectedTagIds.every((selectedId) => bookmark.tagIds.includes(selectedId)));
 
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    // 10px 이상 스크롤되면 경계선 표시 (너무 예민하지 않게)
+    setIsScrolled(offsetY > 10);
+  };
+
   const handlePressTag = (id: string) => {
     setSelectedTagIds((prevIds) => {
       if (prevIds?.includes(id)) {
@@ -59,10 +68,15 @@ export default function HomeScreen() {
   return (
     <SafeAreaView className="flex-1 items-strech bg-white">
       {/* 상단 네비게이션 */}
-      <TopBar activeTab={activeTab} onTabChange={setActiveTab} />
+      <TopBar activeTab={activeTab} onTabChange={setActiveTab} isScrolled={isScrolled} />
       {/* 북마크 리스트 */}
       {activeTab === "tags" ? (
-        <BookmarkList bookmarks={filteredBookmarks} tags={tags} ListHeaderComponent={renderHeader()} />
+        <BookmarkList
+          bookmarks={filteredBookmarks}
+          tags={tags}
+          ListHeaderComponent={renderHeader()}
+          onScroll={handleScroll}
+        />
       ) : (
         <View className="flex-1 items-center justify-center">
           <Text className="text-gray-400 text-lg">카테고리 화면 준비 중 🚧</Text>

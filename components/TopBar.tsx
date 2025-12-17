@@ -10,11 +10,12 @@ export type TabType = "tags" | "categories";
 interface TopBarProps {
   activeTab: TabType;
   onTabChange: (tab: TabType) => void;
+  isScrolled: boolean;
 }
 
-export function TopBar({ activeTab, onTabChange }: TopBarProps) {
+export function TopBar({ activeTab, onTabChange, isScrolled }: TopBarProps) {
   return (
-    <View className="px-5 pt-5 pb-2 border-b border-grey-5 bg-white z-10">
+    <View className="px-5 pt-5 pb-2 bg-white z-10" style={[isScrolled && styles.borderBottom]}>
       <View className="flex-row justify-between items-center">
         {/* 토글 버튼 그룹 */}
         <View className="flex-1 flex-row justify-center">
@@ -71,5 +72,9 @@ const styles = StyleSheet.create({
   },
   activeTab: {
     backgroundColor: "#F7EAEA",
+  },
+  borderBottom: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#F5F5F5",
   },
 });
