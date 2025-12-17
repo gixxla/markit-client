@@ -10,12 +10,15 @@ interface BookmarkListProps {
 }
 
 export const BookmarkList = ({ bookmarks, tags, ListHeaderComponent }: BookmarkListProps) => {
+  const getTags = (ids: string[]): Tag[] => {
+    return ids.map((id) => tags.find((tag) => tag.id === id)).filter((tag): tag is Tag => tag !== undefined);
+  };
   return (
     <FlatList
       data={bookmarks}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <BookmarkItem title={item.title} url={item.url} thumbnail={item.thumbnail} tags={item.tagIds} />
+        <BookmarkItem title={item.title} url={item.url} thumbnail={item.thumbnail} tags={getTags(item.tagIds)} />
       )}
       ItemSeparatorComponent={() => <View className="w-full h-px bg-grey-3" />}
       ListHeaderComponent={ListHeaderComponent}

@@ -1,24 +1,28 @@
 import * as React from "react";
 import { View, Text, Image } from "react-native";
+import type { Tag } from "../types";
 
 import MoreIcon from "../assets/more-icon.svg";
 import DownloadIcon from "../assets/download-icon.svg";
 //import ReminderOnIcon from "../assets/reminder-on-icon.svg";
-import Tag from "../assets/tag.svg";
+import TagBarIcon from "../assets/tag-bar-icon.svg";
 
 interface BookmarkItemProps {
   title: string;
   url: string;
   thumbnail?: string;
-  tags?: string[];
+  tags?: Tag[];
 }
 
-export const BookmarkItem = ({ title, url, thumbnail, tags }: BookmarkItemProps) => {
+export const BookmarkItem = ({ title, url, thumbnail, tags = [] }: BookmarkItemProps) => {
   return (
     <View className="w-full h-[102px] mb-1">
       <View className="flex-row w-full gap-1.5 p-2">
-        <Tag />
-        <Tag />
+        {tags.map((tag) => (
+          <View key={tag.id}>
+            <TagBarIcon color={tag.colorCode} />
+          </View>
+        ))}
       </View>
       <View className="flex-row gap-2 px-2">
         <View className="flex-1">
