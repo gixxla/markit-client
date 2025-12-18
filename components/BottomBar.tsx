@@ -1,11 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { View, TouchableOpacity, Text, StyleSheet, Animated } from "react-native";
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { ActionButtons } from "./ActionButtons";
 
 import BookmarksIcon from "../assets/bookmarks-icon.svg";
 import OfflineIcon from "../assets/offline-icon.svg";
-// import AddBtn from "../assets/add-btn.svg";
-// import AiBtn from "../assets/ai-btn.svg";
 
 const CONTAINER_WIDTH = 216;
 const MARGIN = 6;
@@ -25,7 +24,7 @@ export function BottomBar({ state, navigation }: BottomTabBarProps) {
   }, [state.index, TAB_WIDTH]);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} pointerEvents="box-none">
       <View style={styles.toggleContainer}>
         <Animated.View
           style={[
@@ -87,6 +86,7 @@ export function BottomBar({ state, navigation }: BottomTabBarProps) {
           );
         })}
       </View>
+      <ActionButtons />
     </View>
   );
 }
@@ -96,8 +96,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 40,
     left: 20,
-    right: 0,
-    alignItems: "flex-start",
+    right: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
   },
   toggleContainer: {
     flexDirection: "row",
@@ -113,7 +115,7 @@ const styles = StyleSheet.create({
       height: 10,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 20,
+    shadowRadius: 10,
     elevation: 10,
   },
   activeBackground: {
