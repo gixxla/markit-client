@@ -3,5 +3,6 @@ export const FONTS = {
   "Pretendard-Medium": require("../assets/fonts/Pretendard-Medium.otf"),
   "Pretendard-SemiBold": require("../assets/fonts/Pretendard-SemiBold.otf"),
   "Wanted Sans-Bold": require("../assets/fonts/WantedSans-Bold.otf"),
+  "Wanted Sans-SemiBold": require("../assets/fonts/WantedSans-SemiBold.otf"),
   "Wanted Sans-Medium": require("../assets/fonts/WantedSans-Medium.otf"),
 };

@@ -23,7 +23,7 @@ export function TopBar({ activeTab, onTabChange, isScrolled }: TopBarProps) {
     Animated.spring(translateX, {
       toValue: activeTab === "tags" ? 0 : TAB_WIDTH,
       useNativeDriver: true,
-      damping: 25,
+      damping: 50,
       stiffness: 150,
       mass: 1,
     }).start();
@@ -50,7 +50,7 @@ export function TopBar({ activeTab, onTabChange, isScrolled }: TopBarProps) {
           >
             <TagIcon width={18} height={18} color={activeTab === "tags" ? "#AF282F" : "#858585"} />
             {activeTab === "tags" && (
-              <Text className={`text-xl font-btn-font ${activeTab === "tags" ? "text-mark-it" : "text-gray-400"}`}>
+              <Text className={`text-lg font-h0-font ${activeTab === "tags" ? "text-mark-it" : "text-gray-400"}`}>
                 Tags
               </Text>
             )}
@@ -64,9 +64,7 @@ export function TopBar({ activeTab, onTabChange, isScrolled }: TopBarProps) {
           >
             <CategoryIcon width={18} height={18} color={activeTab === "categories" ? "#AF282F" : "#858585"} />
             {activeTab === "categories" && (
-              <Text
-                className={`text-xl font-btn-font ${activeTab === "categories" ? "text-mark-it" : "text-gray-400"}`}
-              >
+              <Text className={`text-lg font-h0-font ${activeTab === "categories" ? "text-mark-it" : "text-gray-400"}`}>
                 Categories
               </Text>
             )}

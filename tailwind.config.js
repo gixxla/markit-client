@@ -17,6 +17,7 @@ module.exports = {
       },
       fontFamily: {
         "btn-font": "Wanted Sans-Bold",
+        "h0-font": "Wanted Sans-SemiBold",
         "h1-font": "Wanted Sans-Medium",
         "h2-font": "Pretendard-Medium",
         "h2-bold-font": "Pretendard-SemiBold",

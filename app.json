@@ -32,6 +32,7 @@
       "Pretendard-Medium": "./assets/fonts/Pretendard-Medium.otf",
       "Pretendard-SemiBold": "./assets/fonts/Pretendard-SemiBold.otf",
       "Wanted Sans-Bold": "./assets/fonts/WantedSans-Bold.otf",
+      "Wanted Sans-SemiBold": "./assets/fonts/WantedSans-SemiBold.otf",
       "Wanted Sans-Medium": "./assets/fonts/WantedSans-Medium.otf"
     },
     "plugins": ["expo-router", "expo-font"]

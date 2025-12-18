@@ -57,7 +57,7 @@ export function BottomBar({ state, navigation }: BottomTabBarProps) {
                 <View className="items-center">
                   <BookmarksIcon width={32} height={32} color={isFocused ? "#AF282F" : "white"} />
                   <Text
-                    className={`text-sm font-h1-font self-center mt-1 ${isFocused ? "text-mark-it" : "text-white"}`}
+                    className={`text-sm font-h1-font self-center mt-0.5 ${isFocused ? "text-mark-it" : "text-white"}`}
                   >
                     bookmarks
                   </Text>
@@ -67,7 +67,7 @@ export function BottomBar({ state, navigation }: BottomTabBarProps) {
               return (
                 <View className="items-center">
                   <OfflineIcon width={32} height={32} color={isFocused ? "#AF282F" : "white"} />
-                  <Text className={`text-sm font-h1-font mt-1 ${isFocused ? "text-mark-it" : "text-white"}`}>
+                  <Text className={`text-sm font-h1-font mt-0.5 ${isFocused ? "text-mark-it" : "text-white"}`}>
                     offline
                   </Text>
                 </View>
