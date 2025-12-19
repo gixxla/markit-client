@@ -43,7 +43,7 @@ export default function Index() {
   }
 
   return (
-    <SafeAreaView className="flex-1 items-center p-6 bg-white">
+    <SafeAreaView className="flex-1 items-center p-8 bg-white">
       {/* 로고 및 슬로건 영역 */}
       <View className="flex-1 items-center justify-center">
         <Text className="text-4xl font-bold text-mark-it mb-2">Mark-it!</Text>

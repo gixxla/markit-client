@@ -5,14 +5,14 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { FONTS } from "constants/fonts";
 
-SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync().catch(() => {});
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts(FONTS);
 
   useEffect(() => {
     if (fontsLoaded) {
-      SplashScreen.hideAsync();
+      SplashScreen.hideAsync().catch(() => {});
     }
   }, [fontsLoaded]);
 
