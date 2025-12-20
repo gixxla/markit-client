@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Alert,
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
@@ -27,7 +26,7 @@ export default function EmailSignupVerifyScreen() {
   const { email, password } = useLocalSearchParams<{ email: string; password: string }>();
 
   const [code, setCode] = useState("");
-  const [timeLeft, setTimeLeft] = useState(180);
+  const [timeLeft, setTimeLeft] = useState(300);
   const [loading, setLoading] = useState(false);
 
   const [codeError, setCodeError] = useState("");
@@ -83,7 +82,7 @@ export default function EmailSignupVerifyScreen() {
       }
     } catch (e) {
       console.error("인증 에러", e);
-      setCodeError("인증번호가 일치하지 않습니다. 다시 확인해주세요.");
+      setCodeError("인증 코드가 일치하지 않습니다. 다시 확인해주세요.");
     } finally {
       setLoading(false);
     }
@@ -92,7 +91,7 @@ export default function EmailSignupVerifyScreen() {
   const handleResend = async () => {
     try {
       setCodeError("");
-      setTimeLeft(180);
+      setTimeLeft(300);
       setCode("");
       // TODO: 인증번호 재전송 API
       // await client.post("/auth/resend-code", { email });
@@ -126,7 +125,7 @@ export default function EmailSignupVerifyScreen() {
           >
             <View className="gap-4">
               <Text className="text-4xl font-btn-font">인증 메일이 발송되었습니다.</Text>
-              <Text className="text-grey-1 text-lg">메일에 포함된 인증번호 6자리를 입력해주세요.</Text>
+              <Text className="text-grey-1 text-lg">메일에 포함된 인증 코드 6자리를 입력해주세요.</Text>
             </View>
 
             <View className="flex-1 relative">
