@@ -14,7 +14,7 @@ export const toastConfig: ToastConfig = {
   ),
 
   error: ({ text1 }) => (
-    <View className="w-fit max-w-[90%] bg-white/70 px-5 py-4 rounded-full flex-row items-center shadow-lg border border-red-100">
+    <View className="w-fit max-w-[90%] bg-white/80 px-5 py-4 rounded-full flex-row items-center shadow-lg border border-red-100">
       <View className="w-4 h-4 bg-mark-it rounded-full mr-4" />
 
       <View className="w-fit">
@@ -24,7 +24,7 @@ export const toastConfig: ToastConfig = {
   ),
 
   info: ({ text1 }) => (
-    <View className="w-fit max-w-[90%] bg-white/70 px-5 py-4 rounded-full flex-row items-center shadow-lg border border-gray-100">
+    <View className="w-fit max-w-[90%] bg-white/80 px-5 py-4 rounded-full flex-row items-center shadow-lg border border-gray-100">
       <View className="w-4 h-4 bg-blue-400 rounded-full mr-4" />
 
       <View className="w-fit">

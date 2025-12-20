@@ -5,7 +5,6 @@ import {
   Text,
   KeyboardAvoidingView,
   Platform,
-  Alert,
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
@@ -18,6 +17,7 @@ import { AuthHeader } from "../../components/AuthHeader";
 import { LargeButton } from "components/LargeButton";
 import client from "api/client";
 import { AxiosError } from "axios";
+import Toast from "react-native-toast-message";
 
 export default function EmailSignupScreen() {
   const router = useRouter();
@@ -113,7 +113,13 @@ export default function EmailSignupScreen() {
       if (e instanceof AxiosError && e.response?.status === 409) {
         setEmailError("이미 가입된 이메일입니다.");
       } else {
-        Alert.alert("오류", "일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        Toast.show({
+          type: "error",
+          text1: "잠시 후 다시 시도해주세요.",
+          position: "bottom",
+          visibilityTime: 2000,
+          bottomOffset: 90,
+        });
       }
     } finally {
       setLoading(false);
