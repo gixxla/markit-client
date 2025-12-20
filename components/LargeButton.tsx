@@ -6,6 +6,7 @@ interface ButtonProps {
   Icon?: React.FC<SvgProps>;
   title: string;
   onPress: () => void;
+  disabled?: boolean;
   bgColor?: string;
   textColor?: string;
   borderColor?: string;
@@ -15,6 +16,7 @@ export const LargeButton = ({
   Icon,
   title,
   onPress,
+  disabled = false,
   bgColor = "bg-white",
   textColor = "text-black",
   borderColor = "border-transparent",
@@ -22,6 +24,7 @@ export const LargeButton = ({
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={disabled}
       activeOpacity={0.8}
       className={`flex-row items-center justify-center w-full h-16 border-2 rounded-full ${bgColor} ${borderColor}`}
     >
