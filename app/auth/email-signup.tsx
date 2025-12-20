@@ -15,6 +15,7 @@ import { InputField } from "../../components/InputField";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { AuthHeader } from "../../components/AuthHeader";
 import { LargeButton } from "components/LargeButton";
+import client from "api/client";
 
 export default function EmailSignupScreen() {
   const router = useRouter();
@@ -93,8 +94,7 @@ export default function EmailSignupScreen() {
     try {
       setLoading(true);
 
-      // TODO: 인증번호 요청 로직 추가
-
+      await client.post("/auth/verification", { email });
       console.log("인증번호 발송 요청 성공 -> 다음 화면 이동");
 
       router.push({

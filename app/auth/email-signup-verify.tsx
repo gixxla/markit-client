@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import * as SecureStore from "expo-secure-store";
 import { InputField } from "../../components/InputField";
 import { useUserStore } from "../../store/userStore";
 import { client } from "../../api/client";
@@ -70,7 +71,9 @@ export default function EmailSignupVerifyScreen() {
     try {
       setLoading(true);
 
+      const anonymousId = await SecureStore.getItemAsync("anonymousId");
       const response = await client.post("/user/register", {
+        anonymousId,
         email,
         password,
         verificationCode: code,
@@ -93,8 +96,8 @@ export default function EmailSignupVerifyScreen() {
       setCodeError("");
       setTimeLeft(300);
       setCode("");
-      // TODO: 인증번호 재전송 API
-      // await client.post("/auth/resend-code", { email });
+
+      await client.post("/auth/verification", { email });
       Toast.show({
         type: "success",
         text1: "메일이 다시 발송되었습니다.",
