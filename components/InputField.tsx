@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import type { TextInputProps } from "react-native";
 import { View, Text, TextInput, Platform } from "react-native";
 
@@ -7,7 +7,7 @@ interface InputFieldProps extends TextInputProps {
   error?: string;
 }
 
-export function InputField({ label, error, className, ...props }: InputFieldProps) {
+export const InputField = forwardRef<TextInput, InputFieldProps>(({ label, error, className, ...props }, ref) => {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
@@ -24,6 +24,7 @@ export function InputField({ label, error, className, ...props }: InputFieldProp
         `}
       >
         <TextInput
+          ref={ref}
           placeholderTextColor="#B3B3B3"
           className="
             w-full py-3 text-2xl font-h2-light-font leading-tight"
@@ -44,4 +45,6 @@ export function InputField({ label, error, className, ...props }: InputFieldProp
       {error ? <Text className="text-mark-it text-sm font-h2-font mt-1">{error}</Text> : null}
     </View>
   );
-}
+});
+
+InputField.displayName = "InputField";

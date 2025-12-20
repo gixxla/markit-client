@@ -97,7 +97,7 @@ export default function EmailSignupVerifyScreen() {
       setTimeLeft(300);
       setCode("");
 
-      await client.post("/auth/verification", { email });
+      await client.post("/auth/send-code", { email });
       Toast.show({
         type: "success",
         text1: "메일이 다시 발송되었습니다.",

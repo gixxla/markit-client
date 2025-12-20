@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import type { TextInput } from "react-native";
 import {
   View,
   Text,
@@ -16,6 +17,7 @@ import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import { AuthHeader } from "../../components/AuthHeader";
 import { LargeButton } from "components/LargeButton";
 import client from "api/client";
+import { AxiosError } from "axios";
 
 export default function EmailSignupScreen() {
   const router = useRouter();
@@ -29,6 +31,9 @@ export default function EmailSignupScreen() {
   const [passwordError, setPasswordError] = useState("");
   const [confirmError, setConfirmError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const passwordInputRef = useRef<TextInput>(null);
+  const confirmPasswordInputRef = useRef<TextInput>(null);
 
   useEffect(() => {
     const handleKeyboardAnimation = () => {
@@ -94,7 +99,9 @@ export default function EmailSignupScreen() {
     try {
       setLoading(true);
 
-      await client.post("/auth/verification", { email });
+      await client.post("/user/check-email", { email });
+
+      await client.post("/auth/send-code", { email });
       console.log("인증번호 발송 요청 성공 -> 다음 화면 이동");
 
       router.push({
@@ -103,7 +110,11 @@ export default function EmailSignupScreen() {
       });
     } catch (e) {
       console.error(e);
-      Alert.alert("오류", "인증번호 발송에 실패했습니다. 다시 시도해주세요.");
+      if (e instanceof AxiosError && e.response?.status === 409) {
+        setEmailError("이미 가입된 이메일입니다.");
+      } else {
+        Alert.alert("오류", "일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      }
     } finally {
       setLoading(false);
     }
@@ -142,8 +153,10 @@ export default function EmailSignupScreen() {
                 autoFocus
                 textContentType="emailAddress"
                 autoComplete="off"
+                onSubmitEditing={() => passwordInputRef.current?.focus()}
               />
               <InputField
+                ref={passwordInputRef}
                 label="비밀번호"
                 placeholder="여기에 입력"
                 value={password}
@@ -157,9 +170,10 @@ export default function EmailSignupScreen() {
                 returnKeyType="next"
                 textContentType="none"
                 autoComplete="off"
-                passwordRules="minlength: 8; required: lower; required: upper; required: digit; required: [-];"
+                onSubmitEditing={() => confirmPasswordInputRef.current?.focus()}
               />
               <InputField
+                ref={confirmPasswordInputRef}
                 label="비밀번호 확인"
                 placeholder="여기에 입력"
                 value={confirmPassword}
@@ -173,6 +187,7 @@ export default function EmailSignupScreen() {
                 returnKeyType="done"
                 textContentType="none"
                 autoComplete="off"
+                onSubmitEditing={handleNext}
               />
             </View>
 
