@@ -102,14 +102,12 @@ export default function EmailSignupScreen() {
       await client.post("/user/check-email", { email });
 
       await client.post("/auth/send-code", { email });
-      console.log("인증번호 발송 요청 성공 -> 다음 화면 이동");
 
       router.push({
         pathname: "/auth/email-signup-verify",
         params: { email, password },
       });
     } catch (e) {
-      console.error(e);
       if (e instanceof AxiosError && e.response?.status === 409) {
         setEmailError("이미 가입된 이메일입니다.");
       } else {

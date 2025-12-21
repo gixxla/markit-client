@@ -66,13 +66,10 @@ export default function EmailSignupScreen() {
 
       if (response.data.accessToken) {
         await setToken(response.data.accessToken);
-        console.log("로그인 성공! 홈으로 이동합니다.");
 
         router.replace("/(tabs)/home");
       }
     } catch (e) {
-      console.error("로그인 실패", e);
-
       if (e instanceof AxiosError) {
         const message = e.response?.data?.message;
         const status = e.response?.status;

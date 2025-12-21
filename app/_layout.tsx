@@ -8,8 +8,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { FONTS } from "constants/fonts";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "../components/ToastConfig";
-import { useUserStore } from "store/userStore";
-import client from "api/client";
+import { useUserStore } from "../store/userStore";
+import client from "../api/client";
 import { AxiosError } from "axios";
 
 SplashScreen.preventAutoHideAsync().catch(() => {});

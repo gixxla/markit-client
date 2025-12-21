@@ -21,13 +21,11 @@ client.interceptors.request.use(async (config) => {
 });
 
 client.interceptors.response.use(
-  (response) => response, // 성공하면 그대로 통과
+  (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
       console.log("토큰 만료! 로그아웃 처리합니다.");
-
       await SecureStore.deleteItemAsync("accessToken");
-
       router.replace("/");
     }
     return Promise.reject(error);

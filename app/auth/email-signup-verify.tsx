@@ -67,13 +67,13 @@ export default function EmailSignupVerifyScreen() {
     return () => clearInterval(timer);
   }, [timeLeft]);
 
-  const handleComplete = async () => {
+  const handleSignup = async () => {
     try {
       setLoading(true);
 
-      const anonymousId = await SecureStore.getItemAsync("anonymousId");
+      const guestId = await SecureStore.getItemAsync("guestId");
       const response = await client.post("/user/register", {
-        anonymousId,
+        guestId,
         email,
         password,
         verificationCode: code,
@@ -84,7 +84,6 @@ export default function EmailSignupVerifyScreen() {
         router.push("/auth/email-signup-success");
       }
     } catch (e) {
-      console.error("인증 에러", e);
       setCodeError("인증 코드가 일치하지 않습니다. 다시 확인해주세요.");
     } finally {
       setLoading(false);
@@ -163,7 +162,7 @@ export default function EmailSignupVerifyScreen() {
                 title="계속하기"
                 bgColor={code.length === 6 ? "bg-mark-it" : "bg-grey-3"}
                 textColor="text-white"
-                onPress={handleComplete}
+                onPress={handleSignup}
                 disabled={code.length !== 6 || loading}
               />
             </View>

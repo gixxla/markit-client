@@ -2,7 +2,7 @@ import { create } from "zustand";
 import * as SecureStore from "expo-secure-store";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import { registerAnonymous } from "../api/user";
+import { registerByGuest } from "../api/user";
 
 interface UserState {
   userToken: string | null;
@@ -30,17 +30,16 @@ export const useUserStore = create<UserState>((set) => ({
         return true;
       }
 
-      const anonymousId = await SecureStore.getItemAsync("anonymousId");
-      if (anonymousId) {
+      const guestId = await SecureStore.getItemAsync("guestId");
+      if (guestId) {
         set({ userToken: null, isGuest: true, isLoading: false });
-        registerAnonymous(anonymousId).catch(() => {});
+        registerByGuest(guestId).catch(() => {});
         return true;
       }
 
       set({ userToken: null, isGuest: false, isLoading: false });
       return false;
     } catch (e) {
-      console.error("Login Check Failed", e);
       set({ userToken: null, isLoading: false });
       return false;
     }
@@ -50,13 +49,13 @@ export const useUserStore = create<UserState>((set) => ({
     try {
       set({ isLoading: true });
 
-      let anonymousId = await SecureStore.getItemAsync("anonymousId");
-      if (!anonymousId) {
-        anonymousId = uuidv4();
-        await SecureStore.setItemAsync("anonymousId", anonymousId);
+      let guestId = await SecureStore.getItemAsync("guestId");
+      if (!guestId) {
+        guestId = uuidv4();
+        await SecureStore.setItemAsync("guestId", guestId);
       }
 
-      await registerAnonymous(anonymousId);
+      await registerByGuest(guestId);
 
       set({ isGuest: true, userToken: null, isLoading: false });
     } catch (e) {
@@ -67,13 +66,13 @@ export const useUserStore = create<UserState>((set) => ({
 
   setToken: async (token: string) => {
     await SecureStore.setItemAsync("accessToken", token);
-    await SecureStore.deleteItemAsync("anonymousId");
+    await SecureStore.deleteItemAsync("guestId");
     set({ userToken: token, isGuest: false });
   },
 
   logout: async () => {
     await SecureStore.deleteItemAsync("accessToken");
-    await SecureStore.deleteItemAsync("anonymousId");
+    await SecureStore.deleteItemAsync("guestId");
     set({ userToken: null, isGuest: false });
   },
 }));
