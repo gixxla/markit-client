@@ -4,6 +4,8 @@ import { View, Text, TouchableOpacity, StyleSheet, Animated } from "react-native
 import SettingIcon from "../assets/setting-icon.svg";
 import TagIcon from "../assets/tag-icon.svg";
 import CategoryIcon from "../assets/category-icon.svg";
+import { useUserStore } from "store/userStore";
+import { useRouter } from "expo-router";
 
 export type TabType = "tags" | "categories";
 
@@ -17,7 +19,15 @@ const CONTAINER_WIDTH = 160;
 const TAB_WIDTH = CONTAINER_WIDTH / 2;
 
 export function TopBar({ activeTab, onTabChange, isScrolled }: TopBarProps) {
+  const router = useRouter();
+  const { logout } = useUserStore();
+
   const translateX = useRef(new Animated.Value(activeTab === "tags" ? 0 : TAB_WIDTH)).current;
+
+  const handleLogout = async () => {
+    await logout();
+    router.replace("/");
+  };
 
   useEffect(() => {
     Animated.spring(translateX, {
@@ -73,7 +83,7 @@ export function TopBar({ activeTab, onTabChange, isScrolled }: TopBarProps) {
 
         {/* 설정 아이콘 (우측 고정) */}
         <TouchableOpacity className="absolute right-2">
-          <SettingIcon width={24} height={24} color="black" />
+          <SettingIcon width={24} height={24} color="black" onPress={handleLogout} />
         </TouchableOpacity>
       </View>
     </View>

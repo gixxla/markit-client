@@ -29,8 +29,8 @@ export const BookmarkList = ({ bookmarks, tags, ListHeaderComponent, onScroll }:
       scrollEventThrottle={16}
       contentContainerStyle={{ paddingBottom: 180, paddingHorizontal: 20, gap: 4 }}
       ListEmptyComponent={
-        <View className="flex-1 items-center justify-center mt-20">
-          <Text className="text-gray-400">저장된 북마크가 없습니다.</Text>
+        <View className="flex-1 items-center justify-center">
+          <Text className="font-h2-light-font text-lg text-grey-2">저장된 북마크가 없습니다.</Text>
         </View>
       }
     />

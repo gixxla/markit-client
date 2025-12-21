@@ -2,9 +2,8 @@ import * as React from "react";
 import { View, Text, Image } from "react-native";
 import type { Tag } from "../types";
 
-import MoreIcon from "../assets/more-icon.svg";
 import DownloadIcon from "../assets/download-icon.svg";
-//import ReminderOnIcon from "../assets/reminder-on-icon.svg";
+// import ReminderOnIcon from "../assets/reminder-on-icon.svg";
 import TagBarIcon from "../assets/tag-bar-icon.svg";
 
 interface BookmarkItemProps {
@@ -16,7 +15,7 @@ interface BookmarkItemProps {
 
 export const BookmarkItem = ({ title, url, thumbnail, tags = [] }: BookmarkItemProps) => {
   return (
-    <View className="w-full h-[102px] mb-1">
+    <View className="w-full pb-4">
       <View className="flex-row w-full gap-1.5 p-2">
         {tags.map((tag) => (
           <View key={tag.id}>
@@ -30,13 +29,12 @@ export const BookmarkItem = ({ title, url, thumbnail, tags = [] }: BookmarkItemP
             <Text className="font-h2-font text-black text-lg text-left">{title}</Text>
             <Text className="font-h2-light-font text-grey-2 text-sm text-left">{url}</Text>
           </View>
-          <View className="flex-row items-center justify-start gap-3 py-1">
-            <MoreIcon width={18} height={18} />
+          <View className="flex-row items-center justify-start gap-3">
             <DownloadIcon width={18} height={18} />
             {/* <ReminderOnIcon width={20} height={16} /> */}
           </View>
         </View>
-        <View className="pb-1 overflow-hidden">
+        <View className="overflow-hidden">
           <Image source={thumbnail} className="w-[80px] h-[72px] rounded-lg bg-grey-3" />
         </View>
       </View>

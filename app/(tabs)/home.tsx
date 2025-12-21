@@ -9,6 +9,7 @@ import { TagList } from "../../components/TagList";
 import { BookmarkList } from "components/BookmarkList";
 import type { Tag, Bookmark } from "../../types";
 import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
+import { AxiosError } from "axios";
 
 import { useUserStore } from "../../store/userStore";
 import { getTags } from "../../api/tag";
@@ -17,7 +18,7 @@ import { getBookmarks } from "../../api/bookmark";
 import { getLocalBookmarks, getLocalTags } from "../../api/localStorage";
 
 export default function HomeScreen() {
-  const { isGuest } = useUserStore();
+  const { isGuest, userToken } = useUserStore();
 
   const [activeTab, setActiveTab] = useState<TabType>("tags");
   const [isScrolled, setIsScrolled] = useState(false);
@@ -31,6 +32,11 @@ export default function HomeScreen() {
   const fetchData = async () => {
     try {
       setLoading(true);
+
+      if (!isGuest && !userToken) {
+        setLoading(false);
+        return;
+      }
 
       if (isGuest) {
         console.log("게스트 모드: 로컬 데이터 로딩");
@@ -52,8 +58,11 @@ export default function HomeScreen() {
         setBookmarks(mappedBookmarks);
       }
     } catch (e) {
+      // 401 에러는 이미 api/client.ts에서 로그아웃 처리됨
+      if (e instanceof AxiosError && e.response?.status === 401) {
+        return;
+      }
       console.error("데이터 로딩 실패", e);
-      // TODO: 에러 처리
     } finally {
       setLoading(false);
     }
@@ -62,7 +71,7 @@ export default function HomeScreen() {
   useFocusEffect(
     useCallback(() => {
       fetchData();
-    }, [isGuest]),
+    }, [isGuest, userToken]),
   );
 
   const filteredBookmarks =
@@ -101,7 +110,7 @@ export default function HomeScreen() {
       {/* 북마크 리스트 */}
       {loading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#22C55E" />
+          <ActivityIndicator size="large" color="#AF282F" />
         </View>
       ) : activeTab === "tags" ? (
         <BookmarkList

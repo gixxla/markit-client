@@ -4,4 +4,5 @@ export interface Bookmark {
   url: string;
   thumbnail?: string;
   tagIds: string[];
+  category?: string;
 }
