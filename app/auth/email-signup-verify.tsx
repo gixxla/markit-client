@@ -26,9 +26,9 @@ export default function EmailSignupVerifyScreen() {
   const { setToken } = useUserStore();
   const { email, password } = useLocalSearchParams<{ email: string; password: string }>();
 
-  const [code, setCode] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
   const [timeLeft, setTimeLeft] = useState(300);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [codeError, setCodeError] = useState("");
 
@@ -69,14 +69,14 @@ export default function EmailSignupVerifyScreen() {
 
   const handleSignup = async () => {
     try {
-      setLoading(true);
+      setIsLoading(true);
 
       const guestId = await SecureStore.getItemAsync("guestId");
       const response = await client.post("/user/register", {
         guestId,
         email,
         password,
-        verificationCode: code,
+        verificationCode,
       });
 
       if (response.data.accessToken) {
@@ -86,7 +86,7 @@ export default function EmailSignupVerifyScreen() {
     } catch (e) {
       setCodeError("인증 코드가 일치하지 않습니다. 다시 확인해주세요.");
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -94,7 +94,7 @@ export default function EmailSignupVerifyScreen() {
     try {
       setCodeError("");
       setTimeLeft(300);
-      setCode("");
+      setVerificationCode("");
 
       await client.post("/auth/send-code", { email });
       Toast.show({
@@ -134,9 +134,9 @@ export default function EmailSignupVerifyScreen() {
               <InputField
                 label="인증번호"
                 placeholder="인증번호 입력"
-                value={code}
+                value={verificationCode}
                 onChangeText={(text) => {
-                  setCode(text);
+                  setVerificationCode(text);
                   if (timeLeft > 0) setCodeError("");
                 }}
                 error={codeError}
@@ -160,10 +160,10 @@ export default function EmailSignupVerifyScreen() {
               </TouchableOpacity>
               <LargeButton
                 title="계속하기"
-                bgColor={code.length === 6 ? "bg-mark-it" : "bg-grey-3"}
+                bgColor={verificationCode.length === 6 ? "bg-mark-it" : "bg-grey-3"}
                 textColor="text-white"
                 onPress={handleSignup}
-                disabled={code.length !== 6 || loading}
+                disabled={verificationCode.length !== 6 || isLoading}
               />
             </View>
           </ScrollView>

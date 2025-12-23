@@ -29,8 +29,8 @@ export default function EmailSignupScreen() {
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [confirmError, setConfirmError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const passwordInputRef = useRef<TextInput>(null);
   const confirmPasswordInputRef = useRef<TextInput>(null);
@@ -84,10 +84,10 @@ export default function EmailSignupScreen() {
 
     // 3. 비밀번호 확인 검사
     if (password !== confirmPassword) {
-      setConfirmError("비밀번호가 일치하지 않습니다.");
+      setConfirmPasswordError("비밀번호가 일치하지 않습니다.");
       isValid = false;
     } else {
-      setConfirmError("");
+      setConfirmPasswordError("");
     }
 
     return isValid;
@@ -97,7 +97,7 @@ export default function EmailSignupScreen() {
     if (!validateInputs()) return;
 
     try {
-      setLoading(true);
+      setIsLoading(true);
 
       await client.post("/user/check-email", { email });
 
@@ -120,7 +120,7 @@ export default function EmailSignupScreen() {
         });
       }
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -183,9 +183,9 @@ export default function EmailSignupScreen() {
                 value={confirmPassword}
                 onChangeText={(text) => {
                   setConfirmPassword(text);
-                  setConfirmError("");
+                  setConfirmPasswordError("");
                 }}
-                error={confirmError}
+                error={confirmPasswordError}
                 keyboardType="default"
                 secureTextEntry
                 returnKeyType="done"
@@ -201,7 +201,7 @@ export default function EmailSignupScreen() {
                 bgColor={isButtonEnabled ? "bg-mark-it" : "bg-grey-3"}
                 textColor="text-white"
                 onPress={handleNext}
-                disabled={!isButtonEnabled || loading}
+                disabled={!isButtonEnabled || isLoading}
               />
             </View>
           </ScrollView>

@@ -16,10 +16,10 @@ SplashScreen.preventAutoHideAsync().catch(() => {});
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts(FONTS);
-  const { userToken, setToken, logout } = useUserStore();
+  const { accessToken, setToken, logout } = useUserStore();
 
   const refreshSession = useCallback(async () => {
-    if (!userToken) return;
+    if (!accessToken) return;
 
     try {
       const response = await client.post("/auth/refresh");
@@ -38,7 +38,7 @@ export default function RootLayout() {
         console.log("네트워크 오류 등. 기존 세션을 유지하고 오프라인 모드로 진입합니다.");
       }
     }
-  }, [userToken, setToken, logout]);
+  }, [accessToken, setToken, logout]);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {

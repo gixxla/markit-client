@@ -5,11 +5,11 @@ import { useRouter } from "expo-router";
 import BackBtn from "../assets/back-btn.svg";
 import CloseBtn from "../assets/close-btn.svg";
 
-interface Props {
+interface AuthHeaderProps {
   type?: "close" | "back";
 }
 
-export function AuthHeader({ type = "back" }: Props) {
+export function AuthHeader({ type = "back" }: AuthHeaderProps) {
   const router = useRouter();
 
   return (

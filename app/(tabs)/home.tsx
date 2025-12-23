@@ -18,23 +18,23 @@ import { getBookmarks } from "../../api/bookmark";
 import { getLocalBookmarks, getLocalTags } from "../../api/localStorage";
 
 export default function HomeScreen() {
-  const { isGuest, userToken } = useUserStore();
+  const { isGuest, accessToken } = useUserStore();
 
   const [activeTab, setActiveTab] = useState<TabType>("tags");
   const [isScrolled, setIsScrolled] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
 
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
 
-  const fetchData = async () => {
+  const fetchBookmarksAndTags = async () => {
     try {
-      setLoading(true);
+      setIsLoading(true);
 
-      if (!isGuest && !userToken) {
-        setLoading(false);
+      if (!isGuest && !accessToken) {
+        setIsLoading(false);
         return;
       }
 
@@ -64,14 +64,14 @@ export default function HomeScreen() {
       }
       console.error("데이터 로딩 실패", e);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   useFocusEffect(
     useCallback(() => {
-      fetchData();
-    }, [isGuest, userToken]),
+      fetchBookmarksAndTags();
+    }, [isGuest, accessToken]),
   );
 
   const filteredBookmarks =
@@ -108,7 +108,7 @@ export default function HomeScreen() {
       {/* 상단 네비게이션 */}
       <TopBar activeTab={activeTab} onTabChange={setActiveTab} isScrolled={isScrolled} />
       {/* 북마크 리스트 */}
-      {loading ? (
+      {isLoading ? (
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color="#AF282F" />
         </View>

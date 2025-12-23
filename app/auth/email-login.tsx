@@ -31,7 +31,7 @@ export default function EmailSignupScreen() {
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const passwordInputRef = useRef<TextInput>(null);
 
@@ -60,7 +60,7 @@ export default function EmailSignupScreen() {
     }
 
     try {
-      setLoading(true);
+      setIsLoading(true);
 
       const response = await client.post("/auth/login", { email, password });
 
@@ -95,7 +95,7 @@ export default function EmailSignupScreen() {
         }
       }
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -162,7 +162,7 @@ export default function EmailSignupScreen() {
                 bgColor={isButtonEnabled ? "bg-mark-it" : "bg-grey-3"}
                 textColor="text-white"
                 onPress={handleLogin}
-                disabled={!isButtonEnabled || loading}
+                disabled={!isButtonEnabled || isLoading}
               />
             </View>
           </ScrollView>

@@ -2,10 +2,10 @@ import { create } from "zustand";
 import * as SecureStore from "expo-secure-store";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import { registerByGuest } from "../api/user";
+import { registerAsGuest } from "../api/user";
 
 interface UserState {
-  userToken: string | null;
+  accessToken: string | null;
   isGuest: boolean;
   isLoading: boolean;
 
@@ -16,7 +16,7 @@ interface UserState {
 }
 
 export const useUserStore = create<UserState>((set) => ({
-  userToken: null,
+  accessToken: null,
   isGuest: false,
   isLoading: true,
 
@@ -26,21 +26,21 @@ export const useUserStore = create<UserState>((set) => ({
       const token = await SecureStore.getItemAsync("accessToken");
 
       if (token) {
-        set({ userToken: token, isGuest: false, isLoading: false });
+        set({ accessToken: token, isGuest: false, isLoading: false });
         return true;
       }
 
       const guestId = await SecureStore.getItemAsync("guestId");
       if (guestId) {
-        set({ userToken: null, isGuest: true, isLoading: false });
-        registerByGuest(guestId).catch(() => {});
+        set({ accessToken: null, isGuest: true, isLoading: false });
+        registerAsGuest(guestId).catch(() => {});
         return true;
       }
 
-      set({ userToken: null, isGuest: false, isLoading: false });
+      set({ accessToken: null, isGuest: false, isLoading: false });
       return false;
     } catch (e) {
-      set({ userToken: null, isLoading: false });
+      set({ accessToken: null, isLoading: false });
       return false;
     }
   },
@@ -55,9 +55,9 @@ export const useUserStore = create<UserState>((set) => ({
         await SecureStore.setItemAsync("guestId", guestId);
       }
 
-      await registerByGuest(guestId);
+      await registerAsGuest(guestId);
 
-      set({ isGuest: true, userToken: null, isLoading: false });
+      set({ isGuest: true, accessToken: null, isLoading: false });
     } catch (e) {
       set({ isLoading: false });
       throw e;
@@ -67,12 +67,12 @@ export const useUserStore = create<UserState>((set) => ({
   setToken: async (token: string) => {
     await SecureStore.setItemAsync("accessToken", token);
     await SecureStore.deleteItemAsync("guestId");
-    set({ userToken: token, isGuest: false });
+    set({ accessToken: token, isGuest: false });
   },
 
   logout: async () => {
     await SecureStore.deleteItemAsync("accessToken");
     await SecureStore.deleteItemAsync("guestId");
-    set({ userToken: null, isGuest: false });
+    set({ accessToken: null, isGuest: false });
   },
 }));
