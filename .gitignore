@@ -44,3 +44,4 @@ yarn-error.*
 # Claude
 .claude
 CLAUDE.md
+docs/

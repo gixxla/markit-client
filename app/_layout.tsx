@@ -2,6 +2,7 @@ import "../global.css";
 import React, { useCallback } from "react";
 import { Stack } from "expo-router";
 import { View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -52,6 +53,7 @@ export default function RootLayout() {
   }
 
   return (
+    <GestureHandlerRootView className="flex-1">
     <SafeAreaProvider>
       <View className="flex-1" onLayout={onLayoutRootView}>
         <Stack screenOptions={{ headerShown: false }}>
@@ -69,5 +71,6 @@ export default function RootLayout() {
         <Toast config={toastConfig} />
       </View>
     </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }

@@ -1,6 +1,8 @@
 import * as React from "react";
+import { useRef } from "react";
 import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 import { View, Text, FlatList } from "react-native";
+import type { SwipeableMethods } from "react-native-gesture-handler/ReanimatedSwipeable";
 import { BookmarkItem } from "./BookmarkItem";
 import type { Bookmark, Tag } from "../types";
 
@@ -9,9 +11,27 @@ interface BookmarkListProps {
   tags: Tag[];
   ListHeaderComponent?: React.ReactElement;
   onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  onEdit?: (bookmark: Bookmark) => void;
+  onDelete?: (bookmark: Bookmark) => void;
 }
 
-export const BookmarkList = ({ bookmarks, tags, ListHeaderComponent, onScroll }: BookmarkListProps) => {
+export const BookmarkList = ({
+  bookmarks,
+  tags,
+  ListHeaderComponent,
+  onScroll,
+  onEdit,
+  onDelete,
+}: BookmarkListProps) => {
+  const openSwipeable = useRef<SwipeableMethods | null>(null);
+
+  const handleOpen = (ref: SwipeableMethods) => {
+    if (openSwipeable.current && openSwipeable.current !== ref) {
+      openSwipeable.current.close();
+    }
+    openSwipeable.current = ref;
+  };
+
   const getTagsByIds = (ids: string[]): Tag[] => {
     return ids.map((id) => tags.find((tag) => tag.id === id)).filter((tag): tag is Tag => tag !== undefined);
   };
@@ -20,7 +40,15 @@ export const BookmarkList = ({ bookmarks, tags, ListHeaderComponent, onScroll }:
       data={bookmarks}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <BookmarkItem title={item.title} url={item.url} thumbnail={item.thumbnail} tags={getTagsByIds(item.tagIds)} />
+        <BookmarkItem
+          title={item.title}
+          url={item.url}
+          thumbnail={item.thumbnail}
+          tags={getTagsByIds(item.tagIds)}
+          onEdit={() => onEdit?.(item)}
+          onDelete={() => onDelete?.(item)}
+          onOpen={handleOpen}
+        />
       )}
       ItemSeparatorComponent={() => <View className="w-full h-px bg-grey-3" />}
       ListHeaderComponent={ListHeaderComponent}
