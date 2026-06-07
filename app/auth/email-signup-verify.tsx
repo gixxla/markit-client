@@ -16,8 +16,8 @@ import * as SecureStore from "expo-secure-store";
 import { InputField } from "../../components/InputField";
 import { useUserStore } from "../../store/userStore";
 import { client } from "../../api/client";
-import { AuthHeader } from "components/AuthHeader";
-import { LargeButton } from "components/LargeButton";
+import { AuthHeader } from "../../components/AuthHeader";
+import { LargeButton } from "../../components/LargeButton";
 import Toast from "react-native-toast-message";
 
 export default function EmailSignupVerifyScreen() {

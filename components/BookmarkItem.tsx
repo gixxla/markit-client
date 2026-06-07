@@ -23,11 +23,11 @@ export const BookmarkItem = ({ title, url, thumbnail, tags = [] }: BookmarkItemP
           </View>
         ))}
       </View>
-      <View className="flex-row gap-2 px-2">
+      <View className="flex-row gap-4 px-2">
         <View className="flex-1">
-          <View className="flex-1 w-fit h-16 gap-1">
+          <View className="flex-1 w-fit h-fit gap-1">
             <Text className="font-h2-font text-black text-lg text-left">{title}</Text>
-            <Text className="font-h2-light-font text-grey-2 text-sm text-left">{url}</Text>
+            <Text className="font-h2-light-font text-grey-2 text-sm text-left mb-2">{url}</Text>
           </View>
           <View className="flex-row items-center justify-start gap-3">
             <DownloadIcon width={18} height={18} />

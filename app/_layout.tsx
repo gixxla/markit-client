@@ -5,7 +5,7 @@ import { View } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { FONTS } from "constants/fonts";
+import { FONTS } from "../constants/fonts";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "../components/ToastConfig";
 import { useUserStore } from "../store/userStore";

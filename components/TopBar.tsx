@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Animated } from "react-native
 import SettingIcon from "../assets/setting-icon.svg";
 import TagIcon from "../assets/tag-icon.svg";
 import CategoryIcon from "../assets/category-icon.svg";
-import { useUserStore } from "store/userStore";
+import { useUserStore } from "../store/userStore";
 import { useRouter } from "expo-router";
 
 export type TabType = "tags" | "categories";

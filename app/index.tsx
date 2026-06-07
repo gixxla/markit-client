@@ -3,7 +3,7 @@ import { View, Text, ActivityIndicator, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { useUserStore } from "../store/userStore";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { LargeButton } from "components/LargeButton";
+import { LargeButton } from "../components/LargeButton";
 
 export default function Index() {
   const router = useRouter();

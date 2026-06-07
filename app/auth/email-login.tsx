@@ -15,10 +15,10 @@ import { useRouter } from "expo-router";
 import { InputField } from "../../components/InputField";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { AuthHeader } from "../../components/AuthHeader";
-import { LargeButton } from "components/LargeButton";
-import client from "api/client";
+import { LargeButton } from "../../components/LargeButton";
+import client from "../../api/client";
 import { AxiosError } from "axios";
-import { useUserStore } from "store/userStore";
+import { useUserStore } from "../../store/userStore";
 import Toast from "react-native-toast-message";
 
 export default function EmailSignupScreen() {

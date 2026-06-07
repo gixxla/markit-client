@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import { useUserStore } from "../../store/userStore";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthHeader } from "../../components/AuthHeader";
-import { LargeButton } from "components/LargeButton";
+import { LargeButton } from "../../components/LargeButton";
 
 import AppleIcon from "../../assets/apple-icon.svg";
 import GoogleIcon from "../../assets/google-icon.svg";

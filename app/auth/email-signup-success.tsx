@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import { useRouter } from "expo-router";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { AuthHeader } from "../../components/AuthHeader";
-import { LargeButton } from "components/LargeButton";
+import { LargeButton } from "../../components/LargeButton";
 
 export default function SignupScreen() {
   const router = useRouter();
