@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useFocusEffect } from "expo-router";
+import { useBookmarkStore } from "../../store/bookmarkStore";
 import type { TabType } from "../../components/TopBar";
 import { TopBar } from "../../components/TopBar";
 import { SearchBar } from "../../components/SearchBar";
@@ -19,6 +19,7 @@ import { getLocalBookmarks, getLocalTags } from "../../api/localStorage";
 
 export default function HomeScreen() {
   const { isGuest, accessToken } = useUserStore();
+  const { refreshKey } = useBookmarkStore();
 
   const [activeTab, setActiveTab] = useState<TabType>("tags");
   const [isScrolled, setIsScrolled] = useState(false);
@@ -68,11 +69,9 @@ export default function HomeScreen() {
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      fetchBookmarksAndTags();
-    }, [isGuest, accessToken]),
-  );
+  useEffect(() => {
+    fetchBookmarksAndTags();
+  }, [isGuest, accessToken, refreshKey]);
 
   const filteredBookmarks =
     selectedTagIds.length === 0
@@ -94,31 +93,32 @@ export default function HomeScreen() {
     });
   };
 
-  const renderHeader = () => (
-    <View className="pt-3 pb-5 gap-5">
-      {/* 검색 창 */}
-      <SearchBar />
-      {/* 태그 리스트 */}
-      <TagList tags={tags} selectedTagIds={selectedTagIds} onPressTag={handlePressTag} />
-    </View>
-  );
-
   return (
     <SafeAreaView className="flex-1 items-strech bg-white">
       {/* 상단 네비게이션 */}
       <TopBar activeTab={activeTab} onTabChange={setActiveTab} isScrolled={isScrolled} />
-      {/* 북마크 리스트 */}
-      {isLoading ? (
+      {activeTab === "tags" ? (
+        <>
+          {/* 상단 고정 영역: 검색창 + 태그 리스트 */}
+          <View className="px-5 pt-3 pb-5 gap-5">
+            {/* 검색 창 */}
+            <SearchBar />
+            {/* 태그 리스트 */}
+            <TagList tags={tags} selectedTagIds={selectedTagIds} onPressTag={handlePressTag} />
+          </View>
+          {/* 북마크 리스트 (이 영역만 스크롤) */}
+          {isLoading ? (
+            <View className="flex-1 items-center justify-center">
+              <ActivityIndicator size="large" color="#AF282F" />
+            </View>
+          ) : (
+            <BookmarkList bookmarks={filteredBookmarks} tags={tags} onScroll={handleScroll} />
+          )}
+        </>
+      ) : isLoading ? (
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color="#AF282F" />
         </View>
-      ) : activeTab === "tags" ? (
-        <BookmarkList
-          bookmarks={filteredBookmarks}
-          tags={tags}
-          ListHeaderComponent={renderHeader()}
-          onScroll={handleScroll}
-        />
       ) : (
         <View className="flex-1 items-center justify-center">
           <Text className="text-gray-400 text-lg">카테고리 화면 준비 중 🚧</Text>
